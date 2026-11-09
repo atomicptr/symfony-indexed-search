@@ -1,0 +1,16 @@
+parameters:
+  level: 10
+  tmpDir: var/cache/phpstan
+  paths:
+    - src/
+  symfony:
+    containerXmlPath: var/cache/dev/App_KernelDevDebugContainer.xml
+  shipmonkDeadCode:
+    usageExcluders:
+      tests:
+        enabled: true
+  parallel:
+    maximumNumberOfProcesses: 16
+    jobSize: 50
+    processTimeout: 60.0
+

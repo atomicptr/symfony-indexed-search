@@ -1,0 +1,36 @@
+{
+    "name": "atomicptr/symfony-simple-database-search",
+    "description": "Simple Database Search is a Symfony bundle that provides a straightforward database-powered search functionality for Doctrine entities. It makes implementing search across your application's data simple, flexible and easy to integrate.",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Atomicptr\\Symfony\\SimpleDatabaseSearch\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Christopher Kaster",
+            "email": "me@atomicptr.de"
+        }
+    ],
+    "require": {},
+    "require-dev": {
+        "carthage-software/mago": "^1.59",
+        "phpstan/phpstan-symfony": "^2.1.1",
+        "phpstan/phpstan-doctrine": "^2.1.2",
+        "pestphp/pest": "^5.3.5",
+        "phpstan/phpstan": "^2.3.5",
+        "phpstan/extension-installer": "^1.4.3",
+        "phpstan/phpstan-deprecation-rules": "^2.0.5",
+        "phpstan/phpstan-strict-rules": "^2.1.1",
+        "ekino/phpstan-banned-code": "^3.2",
+        "shipmonk/dead-code-detector": "^1.4.2"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        }
+    }
+}

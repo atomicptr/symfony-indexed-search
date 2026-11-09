@@ -1,0 +1,40 @@
+#:schema https://mago.carthage.software/1.59.0/schema.json
+php-version = "8.5"
+threads = 8
+
+[source]
+paths = ["src", "tests"]
+includes = ["vendor"]
+
+[formatter]
+preset = "psr-12"
+print-width = 120
+trailing-comma = true
+space-within-grouping-parenthesis = false
+preserve-breaking-member-access-chain = true
+preserve-breaking-binary-expression = true
+empty-line-after-control-structure = true
+space-around-assignment-in-declare = true
+
+[linter.rules]
+assert-description = { enabled = false }
+cyclomatic-complexity = { enabled = false }
+excessive-parameter-list = { enabled = false }
+function-name = { camel = true, either = false }
+halstead = { enabled = false }
+kan-defect = { enabled = false }
+literal-named-argument = { threshold = 3 }
+no-boolean-flag-parameter = { enabled = false }
+no-else-clause = { enabled = false }
+no-fully-qualified-global-class-like = { enabled = true, level = "Warning" }
+no-nested-ternary = { enabled = false }
+strict-types = { enabled = true, level = "Error" }
+tagged-todo = { enabled = false }
+too-many-methods = { enabled = false }
+too-many-properties = { enabled = false }
+
+[analyzer]
+find-unused-parameters = true
+analyze-dead-code = true
+check-missing-override = true
+no-boolean-literal-comparison = true
