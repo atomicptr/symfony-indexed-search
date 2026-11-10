@@ -3,6 +3,7 @@
 declare(strict_types = 1);
 
 use Atomicptr\Symfony\IndexedSearch\Exception\InvalidArgumentException;
+use Atomicptr\Symfony\IndexedSearch\Tests\Fixtures\Entity\Article;
 use Atomicptr\Symfony\IndexedSearch\Tests\Fixtures\Entity\Product;
 use Atomicptr\Symfony\IndexedSearch\Tests\Fixtures\Entity\Recipe;
 use Atomicptr\Symfony\IndexedSearch\Tests\Fixtures\Entity\Unsearchable;
@@ -126,4 +127,19 @@ it('indexes Doctrine proxies', function (): void {
     $this->app->indexer()->index([$this->app->entityManager()->getReference(Product::class, $product->id)]);
 
     expect($this->app->search()->search('shoe')->hits)->toHaveCount(1);
+});
+
+it('only indexes entities while their #[SearchableWhen] is true', function (): void {
+    $article = new Article();
+    $article->title = 'Draft';
+    $this->app->store($article);
+
+    $article->visible = false;
+    $this->app->store($article);
+    $hidden = documentCount($this);
+
+    $article->visible = true;
+    $this->app->store($article);
+
+    expect($hidden)->toBe(0)->and($this->app->search()->search('draft')->hits)->toHaveCount(1);
 });

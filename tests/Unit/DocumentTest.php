@@ -2,8 +2,10 @@
 
 declare(strict_types = 1);
 
+use Atomicptr\Symfony\IndexedSearch\Enum\TextFormat;
 use Atomicptr\Symfony\IndexedSearch\Enum\Weight;
 use Atomicptr\Symfony\IndexedSearch\Exception\InvalidArgumentException;
+use Atomicptr\Symfony\IndexedSearch\Indexing\Tokenizer;
 use Atomicptr\Symfony\IndexedSearch\Tests\Fixtures\Entity\Category;
 use Atomicptr\Symfony\IndexedSearch\Tests\Fixtures\UnitCategory;
 use Atomicptr\Symfony\IndexedSearch\ValueObject\Document;
@@ -61,3 +63,14 @@ it('rejects invalid filters and variants', function (Closure $create): void {
     'too long value' => [static fn() => Document::create()->withFilter('lang', str_repeat('x', 256))],
     'too long variant' => [static fn() => Document::create(str_repeat('x', 65))],
 ]);
+
+it('keeps words apart that only html tags separate', function (): void {
+    $text = Document::create()
+        ->withText(
+            '<p>Red</p><p>shoe&nbsp;&amp;&nbsp;boot</p><SCRIPT>var token</SCRIPT><p>Co<b>ff</b>ee<style>.x{}</style></p>',
+            format: TextFormat::Html,
+        )
+        ->text(Weight::Normal);
+
+    expect(Tokenizer::words($text))->toBe(['red', 'shoe', 'boot', 'coffee']);
+});

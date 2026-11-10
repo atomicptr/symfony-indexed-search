@@ -17,6 +17,7 @@ final readonly class SearchableClass
      * @param list<TextMapping> $texts
      * @param list<FilterMapping> $filters
      * @param Member|null $documents The #[SearchableDocuments] method if there is one, replaces texts and filters
+     * @param Member|null $condition The #[SearchableWhen] member if there is one, false means nothing is indexed
      */
     public function __construct(
         public string $class,
@@ -26,6 +27,7 @@ final readonly class SearchableClass
         public array $filters,
         public ?Member $date,
         public ?Member $documents,
+        public ?Member $condition,
     ) {
     }
 }

@@ -1,0 +1,8 @@
+# Opt-in for projects using shipmonk/dead-code-detector, include it in your phpstan.neon:
+#   includes:
+#     - vendor/atomicptr/symfony-indexed-search/extension.neon
+services:
+  -
+    class: Atomicptr\Symfony\IndexedSearch\PHPStan\SearchableUsageProvider
+    tags:
+      - shipmonk.deadCode.memberUsageProvider

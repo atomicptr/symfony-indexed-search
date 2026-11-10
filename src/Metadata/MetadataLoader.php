@@ -9,6 +9,7 @@ use Atomicptr\Symfony\IndexedSearch\Attribute\SearchableDate;
 use Atomicptr\Symfony\IndexedSearch\Attribute\SearchableDocuments;
 use Atomicptr\Symfony\IndexedSearch\Attribute\SearchableFilter;
 use Atomicptr\Symfony\IndexedSearch\Attribute\SearchableText;
+use Atomicptr\Symfony\IndexedSearch\Attribute\SearchableWhen;
 use Atomicptr\Symfony\IndexedSearch\Enum\MemberKind;
 use Atomicptr\Symfony\IndexedSearch\Exception\InvalidArgumentException;
 use Atomicptr\Symfony\IndexedSearch\Exception\InvalidMappingException;
@@ -53,10 +54,12 @@ final readonly class MetadataLoader
         $filters = [];
         $date = null;
         $documents = null;
+        $condition = null;
 
         foreach ($this->members($reflection) as $member => $reflector) {
             foreach ($reflector->getAttributes(SearchableText::class) as $attribute) {
-                $texts[] = new TextMapping($member, $attribute->newInstance()->weight);
+                $text = $attribute->newInstance();
+                $texts[] = new TextMapping($member, $text->weight, $text->format);
             }
 
             foreach ($reflector->getAttributes(SearchableFilter::class) as $attribute) {
@@ -65,6 +68,10 @@ final readonly class MetadataLoader
 
             if (count($reflector->getAttributes(SearchableDate::class)) > 0) {
                 $date = $this->single($date, $member, SearchableDate::class, $class);
+            }
+
+            if (count($reflector->getAttributes(SearchableWhen::class)) > 0) {
+                $condition = $this->single($condition, $member, SearchableWhen::class, $class);
             }
 
             if (count($reflector->getAttributes(SearchableDocuments::class)) > 0) {
@@ -98,6 +105,7 @@ final readonly class MetadataLoader
             $filters,
             $date,
             $documents,
+            $condition,
         );
     }
 
@@ -163,6 +171,7 @@ final readonly class MetadataLoader
             SearchableFilter::class,
             SearchableDate::class,
             SearchableDocuments::class,
+            SearchableWhen::class,
         ] as $attribute) {
             if (count($reflector->getAttributes($attribute)) > 0) {
                 return true;

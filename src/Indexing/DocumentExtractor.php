@@ -30,6 +30,10 @@ final readonly class DocumentExtractor
      */
     public function extract(SearchableClass $class, object $entity): array
     {
+        if ($class->condition !== null && !$this->condition($class->condition, $entity)) {
+            return [];
+        }
+
         $documents = $class->documents === null
             ? [$this->fromAttributes($class, $entity)]
             : $this->fromMethod($class->documents, $entity);
@@ -75,7 +79,7 @@ final readonly class DocumentExtractor
                     );
                 }
 
-                $document = $document->withText($value, $text->weight);
+                $document = $document->withText($value, $text->weight, $text->format);
             }
         }
 
@@ -157,6 +161,19 @@ final readonly class DocumentExtractor
                 }
             }
         })();
+    }
+
+    private function condition(Member $member, object $entity): bool
+    {
+        $value = $this->read($member, $entity);
+
+        if (!is_bool($value)) {
+            throw new InvalidValueException(
+                "{$member->label()} must provide a bool, " . get_debug_type($value) . ' given.',
+            );
+        }
+
+        return $value;
     }
 
     private function date(mixed $value, Member $member): ?DateTimeInterface

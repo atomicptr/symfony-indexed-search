@@ -53,7 +53,8 @@
         }
     },
     "suggest": {
-        "doctrine/doctrine-migrations-bundle": "Manage the document table through your migrations"
+        "doctrine/doctrine-migrations-bundle": "Manage the document table through your migrations",
+        "shipmonk/dead-code-detector": "Include extension.neon so members only the bundle reads aren't reported as unused"
     },
     "keywords": [
         "symfony",

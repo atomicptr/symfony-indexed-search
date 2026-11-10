@@ -42,7 +42,7 @@ class Product
     private string $name;
 
     #[ORM\Column(type: 'text')]
-    #[SearchableText]
+    #[SearchableText(format: TextFormat::Html)] // optional, strips the HTML
     private string $description;
 
     #[ORM\Column]
@@ -52,6 +52,10 @@ class Product
     #[ORM\Column]
     #[SearchableDate] // optional, for sorting by date
     private DateTimeImmutable $createdAt;
+
+    #[ORM\Column]
+    #[SearchableWhen] // optional, only indexed while true
+    private bool $published;
 }
 ```
 
@@ -76,6 +80,8 @@ foreach ($result->hits as $hit) {
     $hit->entity; // your Product
 }
 
+$result->entities(); // or just the Products
+
 $result->total;
 $result->hasNextPage;
 ```
@@ -83,7 +89,8 @@ $result->hasNextPage;
 Every word has to match the start of a word somewhere in the text, so `red sho` finds "Red running shoes". Values of the
 same filter are OR, different filters are AND
 
-The index doesn't update itself, call `SearchIndexer::index()` or rerun the command when your entities change
+The index doesn't update itself, call `SearchIndexer::index()`, `indexByIds()` or `remove()` or rerun the command when
+your entities change
 
 ### Translations
 

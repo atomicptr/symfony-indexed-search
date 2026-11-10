@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Atomicptr\Symfony\IndexedSearch\ValueObject;
 
+use Atomicptr\Symfony\IndexedSearch\Enum\TextFormat;
 use Atomicptr\Symfony\IndexedSearch\Enum\Weight;
 use Atomicptr\Symfony\IndexedSearch\Exception\InvalidArgumentException;
 use Atomicptr\Symfony\IndexedSearch\Indexing\FilterNormalizer;
@@ -52,9 +53,12 @@ final readonly class Document
     /**
      * Adds text, null and empty strings are ignored
      */
-    public function withText(string|Stringable|null $text, Weight $weight = Weight::Normal): self
-    {
-        $text = trim((string) $text);
+    public function withText(
+        string|Stringable|null $text,
+        Weight $weight = Weight::Normal,
+        TextFormat $format = TextFormat::Plain,
+    ): self {
+        $text = trim($format->toPlain((string) $text));
 
         if ($text === '') {
             return $this;

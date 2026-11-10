@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Atomicptr\Symfony\IndexedSearch\ValueObject;
 
+use LogicException;
+
 /**
  * One page of search results
  *
@@ -26,6 +28,28 @@ final readonly class SearchResult
         public bool $hasNextPage,
         public bool $totalIsExact = true,
     ) {
+    }
+
+    /**
+     * The entities of the hits in result order, each once even if several of its variants matched
+     *
+     * @return list<T>
+     *
+     * @throws LogicException Without a search with hydrate: true
+     */
+    public function entities(): array
+    {
+        $entities = [];
+
+        foreach ($this->hits as $hit) {
+            if ($hit->entity === null) {
+                throw new LogicException('Search with hydrate: true to get the entities.');
+            }
+
+            $entities[spl_object_id($hit->entity)] ??= $hit->entity;
+        }
+
+        return array_values($entities);
     }
 
     public function totalPages(): ?int
