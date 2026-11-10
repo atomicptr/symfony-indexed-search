@@ -3,8 +3,12 @@ parameters:
   tmpDir: var/cache/phpstan
   paths:
     - src/
-  symfony:
-    containerXmlPath: var/cache/dev/App_KernelDevDebugContainer.xml
+    - config/
+  ignoreErrors:
+    -
+      identifier: shipmonk.deadMethod
+      message: '#^Unused .+::__construct$#'
+      path: src/*
   shipmonkDeadCode:
     usageExcluders:
       tests:
@@ -13,4 +17,3 @@ parameters:
     maximumNumberOfProcesses: 16
     jobSize: 50
     processTimeout: 60.0
-

@@ -1,11 +1,11 @@
 {
-    "name": "atomicptr/symfony-simple-database-search",
-    "description": "Simple Database Search is a Symfony bundle that provides a straightforward database-powered search functionality for Doctrine entities. It makes implementing search across your application's data simple, flexible and easy to integrate.",
+    "name": "atomicptr/symfony-indexed-search",
+    "description": "Indexed Search is a Symfony bundle that provides a straightforward database-powered search functionality for Doctrine entities. It makes implementing search across your application's data simple, flexible and easy to integrate.",
     "type": "symfony-bundle",
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Atomicptr\\Symfony\\SimpleDatabaseSearch\\": "src/"
+            "Atomicptr\\Symfony\\IndexedSearch\\": "src/"
         }
     },
     "authors": [
@@ -14,7 +14,19 @@
             "email": "me@atomicptr.de"
         }
     ],
-    "require": {},
+    "require": {
+        "php": "^8.5",
+        "ext-intl": "*",
+        "symfony/config": "^8.0",
+        "symfony/dependency-injection": "^8.0",
+        "symfony/http-kernel": "^8.0",
+        "symfony/console": "^8.0",
+        "doctrine/orm": "^3.6.8",
+        "doctrine/dbal": "^4.5",
+        "doctrine/doctrine-bundle": "^3.0",
+        "psr/clock": "^1.0",
+        "symfony/clock": "^8.0"
+    },
     "require-dev": {
         "carthage-software/mago": "^1.59",
         "phpstan/phpstan-symfony": "^2.1.1",
@@ -25,12 +37,28 @@
         "phpstan/phpstan-deprecation-rules": "^2.0.5",
         "phpstan/phpstan-strict-rules": "^2.1.1",
         "ekino/phpstan-banned-code": "^3.2",
-        "shipmonk/dead-code-detector": "^1.4.2"
+        "shipmonk/dead-code-detector": "^1.4.2",
+        "symfony/framework-bundle": "^8.0",
+        "doctrine/doctrine-migrations-bundle": "^4.0"
     },
     "config": {
         "allow-plugins": {
             "pestphp/pest-plugin": true,
             "phpstan/extension-installer": true
         }
-    }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Atomicptr\\Symfony\\IndexedSearch\\Tests\\": "tests/"
+        }
+    },
+    "suggest": {
+        "doctrine/doctrine-migrations-bundle": "Manage the document table through your migrations"
+    },
+    "keywords": [
+        "symfony",
+        "bundle",
+        "search",
+        "doctrine"
+    ]
 }
